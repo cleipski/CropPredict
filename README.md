@@ -4,7 +4,7 @@
 
 This project aims to predict winter wheat yields based on location and weather data. See [here](https://github.com/aerialintel/data-science-exercise) for additional details.
 
-In this report I will provide a high-level overview of my approach to the project, my findings and my main results.
+In this report I will provide a high-level overview of my approach to the project, my findings, and my main results.
 
 For technical details I encourage the reader to inspect the Jupyter notebooks in this repository.
 
@@ -23,7 +23,9 @@ The yield is the label, the value that should be predicted. **Note**: this yield
 
 The task is "to try and predict wheat yield for several counties in the United States."
 
-Considering the nature of the data, this formulation is somewhat open to interpretation. Generally, I would have like to start by discussing the data and to better understand the eventual application or business incentive.
+Considering the nature of the data, this formulation is somewhat open to interpretation. Generally, I would have liked to start by discussing the data and to better understand the eventual application or business incentive.
+
+It was also unclear if the yield, which is reported on a county-wide basis, constitutes an average over all location in the county, or a sum.
 
 ## My approach
 
@@ -34,29 +36,73 @@ In its current form, the model is less well suited to answer questions along the
 But see below for ideas of how to potentially address
 this last question as well.
 
-My approach to build this model was to characterize each location across the full season. I essentially marginalized over time, engineering aggregated features for each locations. See the 'Feature engineering' section for more details.
+My approach to build this model was to characterize each location across the full season. I essentially marginalized over time, engineering aggregated weather-based features for each locations. See the 'Feature engineering' section for more details.
 
 
 ## Data exploration and munging
 
-Each year's data includes about 1000 unique locations. A good 80% of the locations are common to both year's data. The time frame covered is end of November to beginning of June the following year. Most locations have measurements reported every day during the season.
+Each year in the data includes about 1000 unique locations. More than 80% of the locations are common to both year's data. The time frame covered is end of November to beginning of June the following year. Most locations have measurements reported on almost every day during the season (>153 days out of 186 days).
+
+In each year, a small number of locations have measurements reported only on less than 14 days out of the full 186 day period.
+
+These locations were removed from the data. Given their limited coverage, it is difficult to reliably engineer the features used in this current model.  With this approach, ~5% of the locations were excluded each year, accounting for >0.2% or the raw data. But also see the section 'Final words' for some ideas on how to potentially recover some information from the excluded locations.
+
+
+As provided, the data set was already fairly clean and included only a small number of missing or NULL/NaN values. Missing data was highly concentrated in the 'pressure' and 'visibility' columns. Because these  weather-related measurements are likely to change with time and region, it makes little sense to use global averages to impute the missing values. Therefore I chose to adopt the following procedure: for each location with a missing weather-related value, I searched for the *geographically nearest* location that had the value in question reported *on the same day*. The assumption here being that the geographically nearest value on the same day is more representative of the missing value than the average of previous and following days records at the target location.
+
+
 
 ## Additional data sources
 
 I wanted to include additional features that I thought might be relevant for this study.
 
-* Elevation: For each location I included the elevation as provided by the Google Maps Elevation API.
+* Elevation: For each location I included the elevation as provided by the [Google Maps Elevation API](https://developers.google.com/maps/documentation/elevation/start).
 
-* Length of Day: For each location I included the length of the day at the last date in each year's data (typically June 3rd). This provides a proxy for the hours of sunlight each location potentially receives.
+* Length of Day: For each location I included the length of the day at the last date in each year's data (typically June 3rd). This provides a proxy for the hours of sunlight each location potentially receives. This was calculated using the [Astral](https://pythonhosted.org/astral/) package for python.
 
 
 ## Feature engineering
 
+The features I used for the modeling were either taken directly from the data as is (longitude, latitude, yield), taken from the additional data sources (elevation, length of day), or engineered from the raw data.
+
+In support of the feature engineering, I calculated a few intermediate features:
+
+* daily average temperature: the average of the daily maximum and minimum temperature.
+
+* daily temperature difference: the difference of the daily maximum and minimum temperature.
+
+The final features that were used in the modeling are:
+
+| Feature | Description |
+| --- | --- |
+| longitude | The geographical longitude of the location in degrees. |
+| latitude | The geographical latitude of the location in degrees. |
+| elevation | The elevation of the location in meters. |
+| LOD | The length of the day at the location, calculated as the difference between sunrise and sunset time. |
+| total_precipitation | The total precipitation during the season. Calculated as the cumulative sum of the raw feature 'precipAccumulation'. |
+| minMAT30 | Minimum average temperature in a 30-day period. A rolling window average over the daily average temperatures was taken with window-size of 30 days. The minimum of the resulting values gives the 30-day period which shows the lowest average temperatures over 30 days. |
+| maxMAT30 | Same as above, but now for the maximum average temperature in a 30-day period. |
+| ratioMNDVI30 | Similarly to minMAT30 and maxMAT30 I found the appropriate min/max values for NDVI in a 30-day rolling window and then took the ratio of these values. |
+| mean_wind_speed | The simple mean wind speed at a location over the full period. |
+| mean_temperature_diff | The mean of the daily temperature differences. |
+| std_temperature_diff | The standard deviation of the daily temperature differences about the mean. |
+| yield | The target variable. The crop yield at the end of the season on a county basis. |
 
 
-
+Before feeding the features into the modeling, I performed feature scaling. All remaining features are numerical
 
 ## Algorithm selection
+
+A simple correlation analysis of the final data showed that there is no obvious strong linear correlation between most features and the target variable. However, some features are clearly correlated linearly.
+
+This already indicates that purely linear models may not be the best algorithms for this application. But regularization can help to alleviate co-linearity issues, while introducing higher order (polynomial) features can help with the non-linearity.
+
+Tree-based ensemble methods (random forest, gradient boosting) are typically good at handling non-linear feature interaction and co-linearity.
+
+I decided to run a number of algorithms (see  [06_algorithm_selection.ipynb](https://github.com/cleipski/CropPredict/blob/master/02_data_exploration_and_modeling.ipynb)). Using 5-fold cross validation I compared their performance and found that using mostly default settings, the random forest regressor performed the best, followed by nearest neighbor regression, KernelRidge regression, and L2 linear regression with polynomial features.
+
+This confirms the earlier notion that purely linear models are not appropriate for this data/feature space. Surprisingly, gradient boosted trees - a recent favorite among many machine-learning competitions - performed poorly. But this algorithm has a sizable number of hyper-parameters. Some tuning of the parameters actually brought the performance up to levels that exceeded the random forest regressor. Tuning the hyper parameter of random forest regressor I was not able achieve the same performance as with the gradient boosted trees.
+
 
 
 ## Model tuning and performance
