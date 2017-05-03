@@ -125,7 +125,7 @@ INSERT IMAGE PREDICTION VS OBSERVED
 
 
 
-The R<sup>2</sup> value of the final model is ~0.81 with an root mean square error (RMSE) of 5.8 (yield values in the dataset range from 10 to 80).
+The R<sup>2</sup> value of the final model is ~0.81 with an root mean square error (RMSE) of 5.8 (yield values in the dataset range from 10 to 80). The mean absolute percentage error is ~5%.
 
 
 
