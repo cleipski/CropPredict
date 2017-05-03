@@ -2,7 +2,7 @@
 
 ### **work in progress**
 
-This project aims to predict winter wheat yields based on location and weather data. See [here](https://github.com/aerialintel/data-science-exercise) for additional details.
+This project aims to predict winter wheat yields based on location and weather data. It is inspired by  [this](https://github.com/aerialintel/data-science-exercise) data science challenge.
 
 In this report I will provide a high-level overview of my approach to the project, my findings, and my main results.
 
@@ -24,6 +24,7 @@ The yield is the label, the value that should be predicted. **Note**: this yield
 The task is "to try and predict wheat yield for several counties in the United States."
 
 Considering the nature of the data, this formulation is somewhat open to interpretation. Generally, I would have liked to start by discussing the data and to better understand the eventual application or business incentive.
+Additional information and discussion with the stakeholders can help significantly in planning the general approach to a machine-learning problem.
 
 It was also unclear if the yield, which is reported on a county-wide basis, constitutes an average over all location in the county, or a sum.
 
@@ -101,14 +102,59 @@ Tree-based ensemble methods (random forest, gradient boosting) are typically goo
 
 I decided to run a number of algorithms (see  [06_algorithm_selection.ipynb](https://github.com/cleipski/CropPredict/blob/master/02_data_exploration_and_modeling.ipynb)). Using 5-fold cross validation I compared their performance and found that using mostly default settings, the random forest regressor performed the best, followed by nearest neighbor regression, KernelRidge regression, and L2 linear regression with polynomial features.
 
-This confirms the earlier notion that purely linear models are not appropriate for this data/feature space. Surprisingly, gradient boosted trees - a recent favorite among many machine-learning competitions - performed poorly. But this algorithm has a sizable number of hyper-parameters. Some tuning of the parameters actually brought the performance up to levels that exceeded the random forest regressor. Tuning the hyper parameter of random forest regressor I was not able achieve the same performance as with the gradient boosted trees.
+This confirms the earlier notion that purely linear models are not appropriate for this data/feature space. Surprisingly, gradient boosted trees - a recent favorite among many machine-learning competitions - performed poorly. But this algorithm has a sizable number of hyper-parameters. Some tuning of the parameters actually brought the performance up to levels that exceeded the random forest regressor. Tuning the hyper parameter of the random forest regressor I was not able achieve the same performance as with the gradient boosted trees.
 
 
 
 ## Model tuning and performance
 
+Therefore I decided to proceed with a gradient-boosted tree (GBT) regression model.
+
+Expanding the parameter search mentioned above I identified combinations of hyper-parameters that maximize performance. I studied learning curves as well as validation curves to investigate the bias-variance tradeoff.  The final result is a set of parameters that for the current dataset provides good performance while limiting overfitting.
+
+INSERT IMAGE LEARNING CURVE
+
+
+The learning curve shows that there are still some issues with slight overfitting, but overall the performance and variance look promising. Increasing the 'n_estimators' parameter in the GBT model would have further increased the performance score, but at the cost of increased overfitting. It seems likely that the overfitting could be alleviated by including more training data.
+
+The final performance of the tuned model was established using a test set for which I compared model predictions to actual yield numbers.
+
+
+
+INSERT IMAGE PREDICTION VS OBSERVED
+
+
+
+The R<sup>2</sup> value of the final model is ~0.81 with an root mean square error (RMSE) of 5.8 (yield values in the dataset range from 10 to 80).
+
+
+
 
 ## Final words
+
+
+What challenges or compromises did you face during the project?
+
+My main challenge was being unfamiliar with the subject matter. More domain knowledge would have helped in engineering more powerful features or intuitively bridging the gaps left by the compact introduction of the problem layout.
+
+
+What did you learn along the way?
+It was a great exercise that covered the whole spectrum of a machine-learning project. From data munging to model tuning and presentation.
+
+
+If you had more time, what would you improve?
+
+
+Get additional data for previous/following years and/or for more locations.
+
+
+Try to create a model tat answer the question: "At location X my weather data so far this season is Y. What kind of yield can I expect at the end of the season?"
+
+One approach would be to take location X's data and compare its profile with the existing locations. Some sort of similarity measure could then inform me about
+which location or locations X is most similar to,  which in turn provides an estimate of the yield Y from the existing data.
+
+Alternatively, a new model could be constructed that maps each individual (daily) measurement directly to the yield.
+
 
 
 
