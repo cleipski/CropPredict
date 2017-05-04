@@ -114,6 +114,9 @@ Expanding the parameter search mentioned above I identified combinations of hype
 
 INSERT IMAGE LEARNING CURVE
 
+![alt text](https://github.com/cleipski/CropPredict/raw/master/images/feature_importance.png "Logo")
+
+![alt text](https://github.com/cleipski/CropPredict/raw/master/images/learning_curve.png "Logo")
 
 The learning curve shows that there are still some issues with slight overfitting, but overall the performance and variance look promising. Increasing the 'n_estimators' parameter in the GBT model would have further increased the performance score, but at the cost of increased overfitting. It seems likely that the overfitting could be alleviated by including more training data.
 
@@ -123,6 +126,9 @@ The final performance of the tuned model was established using a test set for wh
 
 INSERT IMAGE PREDICTION VS OBSERVED
 
+![alt text](https://github.com/cleipski/CropPredict/raw/master/images/model_performance.png =250x)
+
+<img src="https://github.com/cleipski/CropPredict/raw/master/images/model_performance.png" width="200" />
 
 
 The R<sup>2</sup> value of the final model is ~0.81 with an root mean square error (RMSE) of 5.8 (yield values in the dataset range from 10 to 80). The mean absolute percentage error is ~5%.
