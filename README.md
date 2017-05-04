@@ -112,62 +112,48 @@ Therefore I decided to proceed with a gradient-boosted tree (GBT) regression mod
 
 Expanding the parameter search mentioned above I identified combinations of hyper-parameters that maximize performance. I studied learning curves as well as validation curves to investigate the bias-variance tradeoff.  The final result is a set of parameters that for the current dataset provides good performance while limiting overfitting.
 
-<img src="https://github.com/cleipski/CropPredict/raw/master/images/learning_curve.png" width="400" style="align: center"/>
+<img src="https://github.com/cleipski/CropPredict/raw/master/images/learning_curve.png" width="400"/>
 
-The learning curve shows that there are still some issues with slight overfitting, but overall the performance and variance look promising. Increasing the 'n_estimators' parameter in the GBT model would have further increased the performance score, but at the cost of increased overfitting. It seems likely that the overfitting could be alleviated by including more training data.
+The learning curve of the tuned model shows that there are still some issues with slight overfitting, but overall the performance and variance look promising. Increasing the 'n_estimators' parameter in the GBT model would have further increased the performance score, but at the cost of increased overfitting. It seems likely that the overfitting could be alleviated by including more training data.
 
 
 The GBT model also provides access to feature importance ranking:
 
-<img src="https://github.com/cleipski/CropPredict/raw/master/images/feature_importance.png" width="400" style="vertical-align:middle;"/>
+<img src="https://github.com/cleipski/CropPredict/raw/master/images/feature_importance.png" width="400"/>
 
 
 The final performance of the tuned model was established using a test set for which I compared model predictions to actual yield numbers.
 
-<div style="vertical-align:middle;">
 <img src="https://github.com/cleipski/CropPredict/raw/master/images/model_performance.png" width="400"/>
-</div>
 
-The R<sup>2</sup> value of the final model is ~0.81 with an root mean square error (RMSE) of 5.8 (yield values in the dataset range from 10 to 80). The mean absolute percentage error is ~5%.
+The R<sup>2</sup> value of the final model is ~0.81 with an root mean square error (RMSE) of 5.5 (yield values in the dataset range from 10 to 80). The mean absolute percentage error is ~5%.
 
 
 ## Final words
 
 
-What challenges or compromises did you face during the project?
+*What challenges or compromises did you face during the project?*
 
 My main challenge was being unfamiliar with the subject matter. More domain knowledge would have helped in engineering more powerful features or intuitively bridging the gaps left by the compact introduction of the problem layout.
 
+The compromise was then to use my best judgement in overcoming my limited domain knowledge as well as having to make assumption on the concrete business incentive (see comments above in "My approach").
 
-What did you learn along the way?
-It was a great exercise that covered the whole spectrum of a machine-learning project. From data munging to model tuning and presentation.
-
-
-If you had more time, what would you improve?
+It was also tricky to overcome overfitting completely. Getting more data would have been an obvious solution, but for brevity's sake I decided against this effort.
+Switching to a different algorithm might have helped, but at the cost of (much) performance. More careful feature engineering has the potential to offset this effect.
 
 
-Get additional data for previous/following years and/or for more locations.
+*What did you learn along the way?*
+
+It was a great exercise that covered the whole spectrum of a machine-learning project. From data munging to model tuning and presentation. A good opportunity to get more familiar with the GBT algorithm and the effect of the (numerous) hyper-parameters.
 
 
-Try to create a model tat answer the question: "At location X my weather data so far this season is Y. What kind of yield can I expect at the end of the season?"
+*If you had more time, what would you improve?*
+
+Get additional data for previous/following years and/or for more locations. Learn more about the subject matter and try to engineer more or better features.
+
+Try to create a model that answer the question: "At location X my weather data so far this season is Y. What kind of yield can I expect at the end of the season?"
 
 One approach would be to take location X's data and compare its profile with the existing locations. Some sort of similarity measure could then inform me about
 which location or locations X is most similar to,  which in turn provides an estimate of the yield Y from the existing data.
 
-Alternatively, a new model could be constructed that maps each individual (daily) measurement directly to the yield.
-
-
-
-
-
-Some things to consider for your README:
-
-* A brief description of the problem and how you chose to solve it.
-* A high level timeline telling us what you tried and what the results from that were
-* What your final / best approach was and how it performed
-* Technical choices you made during the project
-* What challenges or compromises did you face during the project?
-* What did you learn along the way?
-* If you had more time, what would you improve?
-
-We care about your thought process and your data science prowess. The better we can understand how you approached the problem, the better we can review your project.
+Alternatively, a new model could be constructed that maps each individual (daily) measurement directly to the yield. Considering how each location's seasonal weather trends are likely to determine (at least partly) the yield, the problem of predicting outcome from individual measurements will be an involved (but highly interesting) task.
