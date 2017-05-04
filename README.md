@@ -112,28 +112,23 @@ Therefore I decided to proceed with a gradient-boosted tree (GBT) regression mod
 
 Expanding the parameter search mentioned above I identified combinations of hyper-parameters that maximize performance. I studied learning curves as well as validation curves to investigate the bias-variance tradeoff.  The final result is a set of parameters that for the current dataset provides good performance while limiting overfitting.
 
-INSERT IMAGE LEARNING CURVE
-
-![alt text](https://github.com/cleipski/CropPredict/raw/master/images/feature_importance.png "Logo")
-
-![alt text](https://github.com/cleipski/CropPredict/raw/master/images/learning_curve.png "Logo")
+<img src="https://github.com/cleipski/CropPredict/raw/master/images/learning_curve.png" width="400" style="align: center"/>
 
 The learning curve shows that there are still some issues with slight overfitting, but overall the performance and variance look promising. Increasing the 'n_estimators' parameter in the GBT model would have further increased the performance score, but at the cost of increased overfitting. It seems likely that the overfitting could be alleviated by including more training data.
 
+
+The GBT model also provides access to feature importance ranking:
+
+<img src="https://github.com/cleipski/CropPredict/raw/master/images/feature_importance.png" width="400" style="vertical-align:middle;"/>
+
+
 The final performance of the tuned model was established using a test set for which I compared model predictions to actual yield numbers.
 
-
-
-INSERT IMAGE PREDICTION VS OBSERVED
-
-![alt text](https://github.com/cleipski/CropPredict/raw/master/images/model_performance.png =250x)
-
-<img src="https://github.com/cleipski/CropPredict/raw/master/images/model_performance.png" width="200" />
-
+<div style="vertical-align:middle;">
+<img src="https://github.com/cleipski/CropPredict/raw/master/images/model_performance.png" width="400"/>
+</div>
 
 The R<sup>2</sup> value of the final model is ~0.81 with an root mean square error (RMSE) of 5.8 (yield values in the dataset range from 10 to 80). The mean absolute percentage error is ~5%.
-
-
 
 
 ## Final words
