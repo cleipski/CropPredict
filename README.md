@@ -90,7 +90,9 @@ The final features that were used in the modeling are:
 | yield | The target variable. The crop yield at the end of the season on a county basis. |
 
 
-Before feeding the features into the modeling, I performed feature scaling. All remaining features are numerical
+Before feeding the features into the modeling, I performed feature scaling by removing the mean and scaling to unit variance.
+
+
 
 ## Algorithm selection
 
@@ -122,11 +124,11 @@ The GBT model also provides access to feature importance ranking:
 <img src="https://github.com/cleipski/CropPredict/raw/master/images/feature_importance.png" width="400"/>
 
 
-The final performance of the tuned model was established using a test set for which I compared model predictions to actual yield numbers.
+The final performance of the tuned model was established using a test set (70/30 split) for which I compared model predictions to actual yield numbers.
 
 <img src="https://github.com/cleipski/CropPredict/raw/master/images/model_performance.png" width="400"/>
 
-The R<sup>2</sup> value of the final model is ~0.83 with an root mean square error (RMSE) of 5.3 (yield values in the dataset range from 10 to 80). The mean absolute percentage error is ~5%.
+The R<sup>2</sup> value of the final model is ~0.83 with a root mean square error (RMSE) of 5.3 (yield values in the dataset range from 10 to 80). The mean absolute percentage error is ~5%.
 
 Comparing the observed and predicted yield on the test set:
 
