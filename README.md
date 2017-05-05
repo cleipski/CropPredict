@@ -130,6 +130,8 @@ The final performance of the tuned model was established using a test set (70/30
 
 The R<sup>2</sup> value of the final model is ~0.83 with a root mean square error (RMSE) of 5.3 (yield values in the dataset range from 10 to 80). The mean absolute percentage error is ~5%.
 
+At very high observed yields (>60) the model appears to consistently under-predict. At lower yields the model seems well balanced.
+
 Comparing the observed and predicted yield on the test set:
 
 <img src="https://github.com/cleipski/CropPredict/raw/master/images/compare_yield.png" width="800"/>
