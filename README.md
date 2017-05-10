@@ -1,12 +1,9 @@
 # CropPredict
 
-### **work in progress**
-
 This project aims to predict winter wheat yields based on location and weather data. It is inspired by  [this](https://github.com/aerialintel/data-science-exercise) data science challenge.
 
-In this report I will provide a high-level overview of my approach to the project, my findings, and my main results.
+Here I briefly outline the main steps in my approach as well as my main results. A detailed report is also available:  [Full Report](https://github.com/cleipski/CropPredict/blob/master/Full_Report.md)
 
-For technical details I encourage the reader to inspect the Jupyter notebooks in this repository.
 
 ## Executive summary
 
@@ -38,5 +35,5 @@ While the performance of the model appears quite good, a close inspection reveal
 In future iterations, these issues could be addressed by:
 
 * getting more data,
-* engineering additional and.or different features, or
-* using ensemble technique by combining the results of different models.
+* engineering additional and/or different features, or
+* using ensemble techniques by combining the results of different models.
