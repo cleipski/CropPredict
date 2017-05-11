@@ -18,11 +18,11 @@ Below I outline briefly the main steps in the workflow. The  Jupyter notebooks l
 
 | Task | Summary | Notebook|
 | --- | --- | -- |
-| Explore and clean data | Exploring data structure and impute missing values | [01](https://github.com/cleipski/CropPredict/blob/master/01_data_exploration.ipynb) |
-| Collect additional data | For each location determine elevation and length-of-day at a unified date | [03](https://github.com/cleipski/CropPredict/blob/master/03_elevation_and_length_of_day.ipynb) |
-| Feature engineering | Construct higher-level features by characterizing each location across the season | [04](https://github.com/cleipski/CropPredict/blob/master/04_feature_engineering.ipynb) |
-| Statistical analysis | High-level statistical exploration of final feature set | [05](https://github.com/cleipski/CropPredict/blob/master/05_statisctical_feature_exploration.ipynb) |
-| Select algorithm | Compare a number of algorithms using cross validation to identify the most promising performers for this data/feature set | [06](https://github.com/cleipski/CropPredict/blob/master/06_algorithm_selection.ipynb) |
+| Explore and clean data | Exploring data structure and impute missing values. | [01](https://github.com/cleipski/CropPredict/blob/master/01_data_exploration.ipynb) |
+| Collect additional data | For each location determine elevation and length-of-day at a unified date. | [03](https://github.com/cleipski/CropPredict/blob/master/03_elevation_and_length_of_day.ipynb) |
+| Feature engineering | Construct higher-level features by characterizing each location across the season. | [04](https://github.com/cleipski/CropPredict/blob/master/04_feature_engineering.ipynb) |
+| Statistical analysis | High-level statistical exploration of final feature set. | [05](https://github.com/cleipski/CropPredict/blob/master/05_statisctical_feature_exploration.ipynb) |
+| Select algorithm | Compare a number of algorithms using cross validation to identify the most promising performers for this data/feature set. | [06](https://github.com/cleipski/CropPredict/blob/master/06_algorithm_selection.ipynb) |
 | Tune model | Tune hyper-parameters of a gradient-boosted tree regressor using cross validation, learning curves and validation curves. Find best balance between performance and bias-variance tradeoff. | [06](https://github.com/cleipski/CropPredict/blob/master/06_algorithm_selection.ipynb) |
 | Establish model performance | Use a 30% hold-out test set to compare predicted and observed yields. | [06](https://github.com/cleipski/CropPredict/blob/master/06_algorithm_selection.ipynb) |
 
