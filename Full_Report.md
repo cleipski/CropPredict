@@ -100,18 +100,18 @@ This already indicates that purely linear models may not be the best algorithms 
 Tree-based ensemble methods (random forest, gradient boosting) are typically good at handling non-linear feature interaction and co-linearity. These models can be prone to overfitting which can be
 handled by careful tuning of the hyper-parameters.
 
-I decided to run a number of algorithms (see  [06_algorithm_selection.ipynb](https://github.com/cleipski/CropPredict/blob/master/02_data_exploration_and_modeling.ipynb)). Using 5-fold cross validation I compared their performance and found that using mostly default settings, the random forest regressor performed the best, followed by nearest-neighbor regression, L2 linear regression with polynomial features, support-vector regression using an 'RBF' kernel.
+I decided to run a number of algorithms (see  [06_algorithm_selection.ipynb](https://github.com/cleipski/CropPredict/blob/master/02_data_exploration_and_modeling.ipynb)). Using 5-fold cross validation I compared their performance and found that using mostly default settings, the random forest regressor performed the best, followed by nearest-neighbor regression, L2 linear regression with polynomial features, and support-vector regression using an 'RBF' kernel.
 
 This confirmed the earlier notion that purely linear models are not appropriate for this data/feature space. Surprisingly, gradient boosted trees (GBTs) - a recent favorite among many machine-learning competitions - performed poorly. But this algorithm has a sizable number of hyper-parameters. Some tuning of the parameters actually brought the performance up to levels that exceeded the random forest regressor.
 
-Tuning the hyper parameters of the random forest regressor I was not able to achieve the same performance as with the GBTs. Similarly, the L2 linear regression with polynomial features lacked in tuned performance. Nearest-neighbor regression was clearly overfitting for most parameter combination that would provide good performance. The only real alternative to the GBT performance was a tuned version of the support-vector regression (SVR) using an 'RBF' kernel.
+Tuning the hyper parameters of the random forest regressor I was not able to achieve the same performance as with the GBTs. The L2 linear regression with polynomial features lacked even more in tuned performance. Nearest-neighbor regression was clearly overfitting for most parameter combination that would provide good performance. The only real alternative to the GBT performance was a tuned version of the support-vector regression (SVR) using an 'RBF' kernel.
 
 
 ## Model tuning and performance
 
 Out of the two promising algorithms (GBT and SVR) I decided to proceed with a gradient-boosted tree regression model. My argument for this decision is twofold:
 
-* GBTs have been very successful in recent years and I wanted to explore this algorithm further. w
+* GBTs have been very successful in recent years and I wanted to explore this algorithm further.
 * Both competing models are fairly complex with a number of relevant hyper-parameters. So there was no reason to chose one over the other based on complexity (at similar performance you would typically prefer a less complex model over a more complex one).
 
 Expanding the GBT parameter search mentioned above I identified combinations of hyper-parameters that maximize performance. I studied learning curves as well as validation curves to investigate the bias-variance tradeoff.  The final result is a set of parameters that for the current dataset provides good performance while limiting overfitting.
@@ -150,7 +150,7 @@ My main challenge was being unfamiliar with the subject matter. More domain know
 The compromise was then to use my best judgement for overcoming my limited domain knowledge as well as having to make assumption on the concrete business incentive I would like to address (see comments above in "My approach").
 
 It was also tricky to overcome overfitting completely. Getting more data would have been an obvious solution, but for brevity's sake I decided against this effort.
-Switching to a different algorithm might have helped, but at the cost of (much) performance. More careful feature engineering has the potential to offset this effect. Or using ensemble techniques.
+Switching to a different algorithm might have helped, but (possibly) at the cost of performance. More careful feature engineering has the potential to offset this effect. Or using ensemble techniques.
 
 
 *What did you learn along the way?*
@@ -162,7 +162,7 @@ It was a great exercise that covered the whole spectrum of a machine-learning pr
 
 Get additional data for previous/following years and/or for more locations. Learn more about the subject matter and try to engineer more or better features.
 
-Combine the output of different models using ensemble techniques could boost overall performance and limit overfitting.
+Combining the output of different models using ensemble techniques could boost overall performance and limit overfitting.
 
 Try to create a model that answers the question: "At location X my weather data so far this season is Y. What kind of yield can I expect at the end of the season?"
 
